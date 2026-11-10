@@ -1,141 +1,318 @@
-<!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f3f7fc"><title>Energy Studio Nova — JK-BMS</title><link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./live-styles.css"><link rel="stylesheet" href="./nova-design.css?v=2"><link rel="stylesheet" href="./study-skin.css?v=3"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Energy Studio"><meta name="mobile-web-app-capable" content="yes"><link rel="manifest" href="./manifest.json"><link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="./icon-180.png"><link rel="stylesheet" href="./motion.css?v=4"></head><body data-theme="light" class="public-demo"><symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H3z"/><path d="M9 20v-7h6v7"/></symbol>
-<symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 20V4M3 20h18M6 15l5-5 4 3 5-8"/></symbol>
-<symbol id="i-devices" viewBox="0 0 24 24"><rect x="3" y="5" width="13" height="15" rx="2"/><path d="M7 9h5M7 13h5"/><rect x="18" y="9" width="3" height="10" rx="1"/></symbol>
-<symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m9 2-.5 2.2-2 1.1L4.4 4 2 8l2 1.8v4.4L2 16l2.4 4 2.1-1.3 2 1.1L9 22h6l.5-2.2 2-1.1L19.6 20l2.4-4-2-1.8V9.8L22 8l-2.4-4-2.1 1.3-2-1.1L15 2z"/></symbol>
-<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></symbol>
-<symbol id="i-battery" viewBox="0 0 24 24"><rect x="3" y="5" width="17" height="14" rx="2"/><path d="M22 10v4M7 12h9M11.5 8v8"/></symbol>
-<symbol id="i-zap" viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-12h-7z"/></symbol>
-<symbol id="i-grid" viewBox="0 0 24 24"><path d="M9 3h6l4 18H5zM7 10h10M6 15h12M12 3v18"/></symbol>
-<symbol id="i-thermo" viewBox="0 0 24 24"><path d="M9 14V5a3 3 0 0 1 6 0v9a5 5 0 1 1-6 0z"/><path d="M12 9v9"/></symbol>
-<symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
-<symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14a9 9 0 0 1-11-11A9 9 0 1 0 21 14z"/></symbol>
-</defs></svg>
-<div class="app">
-  <aside class="sidebar">
-    <div class="brand"><span class="brand-mark"><svg><use href="#i-zap"/></svg></span><span><strong>Energy Studio</strong><small>JK-BMS · UI LAB</small></span></div>
-    <div class="side-title">ПАНЕЛЬ УПРАВЛЕНИЯ</div>
-    <nav class="side-nav" aria-label="Навигация">
-      <button class="nav-btn active" data-target="home"><svg><use href="#i-home"/></svg><span>Главная</span></button>
-      <button class="nav-btn" data-target="analytics"><svg><use href="#i-chart"/></svg><span>Аналитика</span></button>
-      <button class="nav-btn" data-target="devices"><svg><use href="#i-devices"/></svg><span>Устройства</span></button>
-      <button class="nav-btn" data-target="settings"><svg><use href="#i-settings"/></svg><span>Настройки</span></button>
-    </nav>
-    <div class="side-footer"><span class="status-pin"></span> Локальный прототип <small>Нет подключения к оборудованию</small></div>
-  </aside>
-  <div class="content">
-    <header class="topbar"><div class="topbar-left"><span class="eyebrow">ENERGY STUDIO · PWA 4.0</span><strong>Мой дом <span class="header-caret">⌄</span></strong></div><div class="topbar-right"><span class="demo-tag" id="top-mode" role="status">● DEMO</span><button id="theme-top" class="round-button" title="Переключить тему" aria-label="Переключить тему"><svg><use href="#i-moon"/></svg></button></div></header>    <main>      <section class="page active" id="page-home" aria-label="Главная">
-        <div class="section-heading"><div><span class="eyebrow">МОНИТОРИНГ ЭНЕРГИИ</span><h1>Мой дом</h1><p>Аккумулятор, энергия и состояние системы</p></div><span class="online-tag">● Демо-данные</span></div>        <div class="source-switcher" role="group" aria-label="Источник данных"><button id="use-demo" type="button" aria-pressed="true" class="active">DEMO</button><button id="use-live" type="button" aria-pressed="false">МОЯ BMS</button><span class="source-status" id="source-status" role="status" aria-live="polite">Тестовые данные</span></div>
-        <div class="system-summary" aria-label="Состояние аккумулятора">
-          <div class="summary-icon"><svg><use href="#i-battery"/></svg></div>
-          <div class="summary-copy"><small>ЭНЕРГЕТИЧЕСКАЯ СИСТЕМА · 8S</small><strong>Резервное питание</strong><span>JK-BMS · LiFePO4 · 8 ячеек</span></div>
-          <div class="summary-soc"><small>СОСТОЯНИЕ ЗАРЯДА</small><strong><span id="hero-soc">82</span>%</strong><span class="summary-mode" id="hero-mode">Разряд</span></div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поток энергии</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Include Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: white;
+            margin: 0;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        /* Shared node styling */
+        .power-node {
+            background-color: rgba(0, 0, 0, 0.8);
+            border-width: 2px;
+            border-style: solid;
+            backdrop-filter: blur(4px);
+            transition: all 0.4s ease;
+            border-color: #333333; /* Default inactive */
+        }
+
+        .icon-transition {
+            transition: color 0.4s ease;
+            color: #555555; /* Default inactive */
+        }
+        
+        .val-transition {
+            transition: color 0.4s ease;
+            color: #555555; /* Default inactive */
+        }
+
+        .scenario-btn {
+            transition: all 0.2s ease;
+        }
+
+        /* Animated Flow Lines (Dots) */
+        .anim-flow {
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-dasharray: 0.1 3.9;
+            animation: flow-anim 0.6s linear infinite;
+            opacity: 0;
+            transition: opacity 0.4s ease, stroke 0.4s ease;
+        }
+
+        @keyframes flow-anim {
+            from { stroke-dashoffset: 4; }
+            to { stroke-dashoffset: 0; }
+        }
+        
+        svg path.static-line {
+            transition: stroke 0.4s ease, opacity 0.4s ease;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen w-full select-none">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between p-4 sm:p-6 pb-2 z-20 relative">
+        <button class="p-2 -ml-2 text-white hover:text-gray-300 transition-colors cursor-pointer" aria-label="Назад">
+            <i data-lucide="chevron-left" class="w-6 h-6 sm:w-8 sm:h-8"></i>
+        </button>
+        <h1 class="text-base sm:text-lg tracking-[0.2em] font-medium uppercase absolute left-1/2 transform -translate-x-1/2">
+            ПОТОК ЭНЕРГИИ
+        </h1>
+        <div class="w-8"></div> <!-- Spacer for centering -->
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 relative w-full max-w-[600px] mx-auto flex items-center justify-center overflow-hidden mb-20 sm:mb-0">
+        
+        <!-- Container for responsive aspect ratio -->
+        <div class="relative w-full aspect-square max-h-full">
+            
+            <!-- SVG Layer for Lines and Animations -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <filter id="glow" filterUnits="userSpaceOnUse" x="-20" y="-20" width="140" height="140">
+                        <feGaussianBlur stdDeviation="0.8" result="blur" />
+                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                </defs>
+
+                <!-- Static Connecting Lines -->
+                <path id="path-grid-inv" class="static-line" d="M 27 50 L 38 50" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <path id="path-inv-apt" class="static-line" d="M 62 50 L 73 50" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <path id="path-inv-bat" class="static-line" d="M 50 62 L 50 73" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <path id="path-bat-inv" class="static-line" d="M 50 73 L 50 62" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <!-- New Bypass Line (Grid direct to Apartment) -->
+                <path id="path-grid-apt" class="static-line" d="M 23 41 Q 50 15 77 41" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+
+                <!-- Animating Energy Flow (Dashed lines acting as moving dots) -->
+                <path id="anim-grid-inv" class="anim-flow" d="M 27 50 L 38 50" filter="url(#glow)" />
+                <path id="anim-inv-bat" class="anim-flow" d="M 50 62 L 50 73" filter="url(#glow)" />
+                <path id="anim-bat-inv" class="anim-flow" d="M 50 73 L 50 62" filter="url(#glow)" />
+                <path id="anim-inv-apt" class="anim-flow" d="M 62 50 L 73 50" filter="url(#glow)" />
+                <path id="anim-grid-apt" class="anim-flow" d="M 23 41 Q 50 15 77 41" filter="url(#glow)" />
+            </svg>
+
+            <!-- HTML Nodes Overlay -->
+            
+            <!-- LEFT: Городская сеть (Grid) -->
+            <div class="absolute top-[50%] left-[15%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+                <div id="node-grid" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
+                    <i data-lucide="utility-pole" id="icon-grid" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
+                    <span id="val-grid" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
+                </div>
+                <span class="absolute top-full mt-2 text-[10px] sm:text-xs text-gray-300 font-medium tracking-wide whitespace-nowrap">Городская сеть</span>
+            </div>
+            
+            <!-- CENTER: Инвертор (Inverter) -->
+            <div class="absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+                <span class="absolute bottom-full mb-2 text-[10px] sm:text-xs text-gray-300 font-medium tracking-wide whitespace-nowrap">Инвертор</span>
+                <div id="node-inv" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
+                    <i data-lucide="cpu" id="icon-inv" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
+                    <span id="val-inv" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
+                </div>
+            </div>
+
+            <!-- RIGHT: Квартира (Apartment) -->
+            <div class="absolute top-[50%] left-[85%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+                <div id="node-apt" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
+                    <i data-lucide="building-2" id="icon-apt" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
+                    <span id="val-apt" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
+                </div>
+                <span class="absolute top-full mt-2 text-[10px] sm:text-xs text-gray-300 font-medium tracking-wide whitespace-nowrap">Квартира</span>
+            </div>
+
+            <!-- BOTTOM: Аккумулятор (Battery) -->
+            <div class="absolute top-[85%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+                <div id="node-bat" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
+                    <i data-lucide="battery-medium" id="icon-bat" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
+                    <span id="val-bat" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
+                </div>
+                <span class="absolute top-full mt-2 text-[10px] sm:text-xs text-gray-300 font-medium tracking-wide whitespace-nowrap">Аккумулятор</span>
+            </div>
+
         </div>
-        <div class="dashboard-layout">
-          <div class="dashboard-primary">
-            <div class="scene-card">
-              <div class="scene-top"><span><span class="status-pin"></span> Интерактивная симуляция</span><span>JK-BMS / 8S</span></div>
-              <div class="scene-visual" id="scene-visual">                <svg viewBox="0 0 620 344" class="home-art" role="img" aria-label="Авторская иллюстрация дома, солнечных панелей и батарейного модуля">
-                  <defs><linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d5e6e6"/><stop offset="1" stop-color="#99b0b7"/></linearGradient><linearGradient id="roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#527b83"/><stop offset="1" stop-color="#183f4c"/></linearGradient><linearGradient id="panel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#93d0c1"/><stop offset="1" stop-color="#2b6878"/></linearGradient><linearGradient id="battery" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e1edec"/><stop offset="1" stop-color="#95aab0"/></linearGradient></defs>
-                  <ellipse cx="320" cy="288" rx="248" ry="37" fill="#123b3c" opacity=".25"/>
-                  <path d="M144 150 310 53 486 151 486 260 310 308 144 261Z" fill="url(#wall)"/>
-                  <path d="M310 53 486 151 486 261 310 308Z" fill="#829fa6"/>
-                  <path d="M124 155 302 48 509 151 483 168 308 79 148 177Z" fill="url(#roof)"/>
-                  <path d="M166 142 293 68 428 136 319 159Z" fill="#214854"/>
-                  <path d="M171 140 290 72 409 134 318 154Z" fill="url(#panel)" stroke="#d0e7df" stroke-width="2"/>
-                  <path d="M212 117 354 146M258 92 399 139M295 74 310 150M253 96 278 145" fill="none" stroke="#d7efeb" stroke-opacity=".65" stroke-width="2"/>
-                  <path d="M343 188 445 209 445 270 343 296Z" fill="#243e49"/><path d="M350 195 440 215 440 262 350 287Z" fill="#e2bd79" opacity=".82"/>
-                  <path d="M186 209 247 190 247 272 186 285Z" fill="#5d7f89"/><path d="M198 214 236 202 236 265 198 276Z" fill="#d8d8ac" opacity=".75"/>
-                  <path d="M310 153v154" stroke="#e4f1eb" stroke-width="2" opacity=".22"/>
-                  <rect x="94" y="224" width="66" height="82" rx="11" fill="url(#battery)" stroke="#e9f3f0" stroke-width="2"/><rect x="105" y="237" width="44" height="7" rx="3" fill="#6b9994"/><rect x="105" y="254" width="44" height="38" rx="4" fill="#324954"/>
-                  <rect x="105" y="254" width="44" height="38" rx="4" fill="#4bd39e" opacity=".48" id="art-battery-fill"/><circle cx="127" cy="298" r="2.5" fill="#44d49b"/>
-                  <rect x="274" y="183" width="58" height="67" rx="10" fill="#e5efea" stroke="#edf5ef" stroke-width="2"/><rect x="282" y="197" width="41" height="26" rx="5" fill="#607f86"/><path d="m306 201-10 13h8l-3 7 13-14h-9z" fill="#c3f69b"/>
-                  <path d="M160 264H213Q244 264 272 239" fill="none" stroke="#76dcb1" stroke-width="4" stroke-linecap="round" class="energy-pulse"/>
-                  <path d="M328 239Q359 245 366 213" fill="none" stroke="#76dcb1" stroke-width="4" stroke-linecap="round" class="energy-pulse"/>
-                  <circle cx="213" cy="264" r="4" fill="#89efb2"/><circle cx="329" cy="240" r="4" fill="#89efb2"/>
-                </svg>
-                <div class="scene-label solar"><span>Генерация PV*</span><strong id="scene-solar">0 Вт</strong></div>
-                <div class="scene-label load"><span>Нагрузка дома*</span><strong id="scene-home">300 Вт</strong></div>
-                <div class="scene-label battery-label"><span>Аккумулятор</span><strong><span id="scene-soc">82</span>%</strong></div>
-                <div class="scene-label grid"><span>Городская сеть*</span><strong id="scene-grid">0 Вт</strong></div>
-              </div>
-              <div class="scene-bottom"><span>* Генерация, сеть и нагрузка симулируются; данные JK-BMS в деморежиме также тестовые.</span></div>
-            </div>
-            <section class="energy-map-card" aria-label="Потоки энергии">
-  <div class="map-head"><div><span class="eyebrow">ENERGY FLOW</span><h2>Энергетическая система</h2></div><span class="flow-disclaimer" id="flow-source">Симуляция · DEMO</span></div>
-  <div class="energy-map" id="energy-map" data-battery="discharge" data-available="demo">
-    <svg class="energy-traces" viewBox="0 0 520 320" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-      <defs><filter id="trace-glow"><feGaussianBlur stdDeviation="3"/></filter></defs>
-      <path class="trace-base" d="M260 68 V130 M113 160 H190 M330 160 H407 M260 206 V260"/>
-      <path class="trace trace-solar" id="trace-solar" d="M260 68 V130" />
-      <path class="trace trace-grid" id="trace-grid" d="M113 160 H190"/>
-      <path class="trace trace-home" id="trace-home" d="M330 160 H407"/>
-      <path class="trace trace-battery" id="trace-battery" d="M260 206 V260"/>
-    </svg>
-    <div class="energy-hub" role="img" aria-label="Центральный узел схемы"><svg><use href="#i-zap"/></svg><span>Система</span></div>
-    <div class="energy-node node-solar"><span class="energy-node-icon sun"><svg><use href="#i-sun"/></svg></span><span>Солнечные панели</span><strong id="map-solar">0 Вт</strong></div>
-    <div class="energy-node node-grid"><span class="energy-node-icon gridicon"><svg><use href="#i-grid"/></svg></span><span>Сеть</span><strong id="map-grid">0 Вт</strong></div>
-    <div class="energy-node node-home"><span class="energy-node-icon house"><svg><use href="#i-home"/></svg></span><span>Дом</span><strong id="map-home">300 Вт</strong></div>
-    <div class="energy-node node-battery"><span class="energy-node-icon batteryicon"><svg><use href="#i-battery"/></svg></span><span>JK-BMS</span><strong id="map-battery">300 Вт</strong><span class="flow-direction" id="map-direction">Разряд</span></div>
-  </div>
-  <p class="map-footnote" id="map-note">Направление частиц показывает демонстрационные потоки. В реальном режиме BMS сообщает только мощность своей батареи.</p>
-</section>
-
-            <div class="metric-grid">
-              <article class="metric-card"><div class="metric-title"><span class="metric-icon green"><svg><use href="#i-battery"/></svg></span> Заряд батареи</div><div class="metric-number"><span id="metric-soc">82</span><small>%</small></div><div class="progress"><span id="soc-progress"></span></div><p id="soc-status">Разряд аккумулятора</p></article>
-              <article class="metric-card"><div class="metric-title"><span class="metric-icon orange"><svg><use href="#i-zap"/></svg></span> Мощность АКБ</div><div class="metric-number"><span id="metric-power">300</span><small>Вт</small></div><p id="power-direction">Отдаёт энергию</p></article>
-              <article class="metric-card"><div class="metric-title"><span class="metric-icon blue"><svg><use href="#i-grid"/></svg></span> Напряжение</div><div class="metric-number"><span id="metric-voltage">26.2</span><small>В</small></div><p><span id="metric-current">-11.45</span> А · JK-BMS</p></article>
-            </div>
-            <section class="cells-card" aria-label="Мониторинг 8 ячеек аккумулятора">
-  <div class="cells-head"><div><span class="eyebrow">BATTERY HEALTH</span><h2>8 ячеек аккумулятора</h2></div><span class="info-chip" id="cells-data-label">DEMO</span></div>
-  <div class="cells-summary"><span>Минимум <strong id="cell-min">—</strong></span><span>Максимум <strong id="cell-max">—</strong></span><span>Разброс <strong id="cell-delta">—</strong></span></div>
-  <div class="cells-bars" id="cells-bars" aria-label="Напряжения ячеек"></div>
-  <div class="cells-bottom"><span>Балансир <strong id="balancer-current">—</strong></span><span>Темп. BMS <strong id="mos-temperature">—</strong></span><span>SOH <strong id="soh-data">—</strong></span></div>
-</section>
-
-            <div class="two-cards">
-              <article class="info-card"><div class="card-head"><span>Изменение заряда</span><span class="info-chip">24 часа · DEMO</span></div><div class="card-stat"><b id="chart-soc-summary">82%</b><small>Текущий SOC</small></div><svg class="spark" viewBox="0 0 300 90" preserveAspectRatio="none" aria-label="Пример графика уровня заряда"><path id="spark-soc" fill="none" stroke="#4bd5a1" stroke-width="3" stroke-linecap="round"/></svg></article>
-              <article class="info-card"><div class="card-head"><span>Энергопотребление</span><span class="info-chip">24 часа · DEMO</span></div><div class="card-stat"><b id="chart-load-summary">300 Вт</b><small>Условная нагрузка</small></div><svg class="spark" viewBox="0 0 300 90" preserveAspectRatio="none" aria-label="Пример графика энергопотребления"><path id="spark-load" fill="none" stroke="#f4ad6a" stroke-width="3" stroke-linecap="round"/></svg></article>
-            </div>
-          </div>
-          <aside class="dashboard-aside">
-            <article class="info-card battery-card"><div class="card-head"><span>Накопитель энергии</span><span class="info-chip"><span class="status-pin"></span> DEMO</span></div>
-              <div class="battery-ring" id="battery-ring"><div class="ring-inner"><svg class="ring-icon"><use href="#i-battery"/></svg><strong><span id="ring-soc">82</span>%</strong><small>Состояние заряда</small></div></div>
-              <div class="battery-extra"><div><span>Температура</span><b>24.1 °C <svg><use href="#i-thermo"/></svg></b></div><div><span>Ячейки</span><b>8 / 8</b></div><div><span>Состояние</span><b id="battery-state">Разряд</b></div></div>
-            </article>
-            <details class="sim-card" id="flow-demo-controls" open><summary>Тестировать интерфейс <span class="info-chip">ПОЛНОСТЬЮ ДЕМО</span></summary><p>Меняйте параметры. Ни одно действие не отправляется в ESP32, Sonoff или инвертор.</p>              <label class="range-label" for="soc">SOC <output id="out-soc">82%</output></label><input type="range" id="soc" min="0" max="100" step="1" value="82"/>
-              <label class="range-label" for="current">Ток АКБ <output id="out-current">-11.45 А</output></label><input type="range" id="current" min="-40" max="40" step=".05" value="-11.45"/>
-              <label class="range-label" for="solar">PV · симуляция <output id="out-solar">0 Вт</output></label><input type="range" id="solar" min="0" max="3000" step="50" value="0"/>
-              <label class="range-label" for="load">Дом · симуляция <output id="out-load">300 Вт</output></label><input type="range" id="load" min="0" max="3000" step="50" value="300"/>
-              <div class="preset-row"><button data-preset="battery">От АКБ</button><button data-preset="grid">От сети</button><button data-preset="sun">PV + заряд</button><button data-preset="idle">Покой</button><button id="auto-demo" type="button" aria-pressed="false">▶ Автодемо</button></div>
-            </details>
-          </aside>
-        </div>
-      </section>
-      <section class="page" id="page-analytics" aria-label="Аналитика"><div class="section-heading"><div><span class="eyebrow">ЭНЕРГОПОТОКИ</span><h1>Аналитика</h1><p>Пример временных графиков. Исторические данные не записываются.</p></div></div>
-        <article class="info-card analytics-card"><div class="card-head"><span>Баланс мощности</span><span class="info-chip">SIMULATED</span></div><div class="period-tabs" role="group" aria-label="Период"><button class="active" data-period="day">День</button><button data-period="week">Неделя</button><button data-period="month">Месяц</button></div><div class="chart-legend"><span><i class="dot-green"></i> Нагрузка</span><span><i class="dot-orange"></i> PV</span><span><i class="dot-blue"></i> Сеть</span></div><svg id="analytics-chart" viewBox="0 0 700 270" preserveAspectRatio="none" aria-label="Синтетический график энергии"><g id="analytics-lines"></g></svg><div class="chart-axis"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div></article>
-        <div class="analytic-stats"><article class="metric-card"><div class="metric-title">Генерация PV*</div><div class="metric-number" id="analytics-solar">0 Вт</div></article><article class="metric-card"><div class="metric-title">Потребление*</div><div class="metric-number" id="analytics-home">300 Вт</div></article><article class="metric-card"><div class="metric-title">Импорт сети*</div><div class="metric-number" id="analytics-grid">0 Вт</div></article></div><p class="disclaimer">* Только симуляция. BMS не измеряет мощность PV, сети или дома. Графики — иллюстрация интерфейса, не журнал.</p>
-      </section>
-      <section class="page" id="page-devices" aria-label="Устройства"><div class="section-heading"><div><span class="eyebrow">ОБОРУДОВАНИЕ</span><h1>Устройства</h1><p>Пример карточек и статусов оборудования</p></div></div>
-        <div class="device-list"><article class="device-row"><span class="device-icon"><svg><use href="#i-battery"/></svg></span><div><strong>JK-BMS · 8S</strong><small>Напряжение, ток, SOC, температура и ячейки</small></div><span class="device-status simulation">Демо</span></article><article class="device-row"><span class="device-icon"><svg><use href="#i-devices"/></svg></span><div><strong>ESP32</strong><small>В локальном прототипе устройство не подключено</small></div><span class="device-status unknown">Не подключено</span></article><article class="device-row"><span class="device-icon"><svg><use href="#i-grid"/></svg></span><div><strong>Инвертор</strong><small>Нет интеграции измерений AC / PV</small></div><span class="device-status unknown">Нет данных</span></article><article class="device-row"><span class="device-icon"><svg><use href="#i-zap"/></svg></span><div><strong>Sonoff</strong><small>Действия управления здесь отсутствуют</small></div><span class="device-status unknown">Не подключено</span></article></div>
-      </section>
-      <section class="page" id="page-settings" aria-label="Настройки"><div class="section-heading"><div><span class="eyebrow">ПРОТОТИП</span><h1>Настройки</h1><p>Визуальные параметры локального демо</p></div></div>
-        <section class="connection-panel" id="connection-panel">
-  <div class="connection-intro"><span class="connection-icon"><svg><use href="#i-battery"/></svg></span><div><h2>Подключить мою JK-BMS</h2><p>Данные поступают с твоего ESP32 через локальный мост только для чтения. Инвертором и Sonoff этот интерфейс не управляет.</p></div></div>
-  <form id="connection-form" autocomplete="off">
-    <label for="reader-token">Ключ просмотра JK-BMS (64 символа)</label>
-    <div class="key-form-line"><input id="reader-token" name="reader" type="password" inputmode="text" spellcheck="false" autocapitalize="off" autocomplete="off" maxlength="64" placeholder="Вставь ключ просмотра, полученный в PWA ESP32" required ><button type="submit" id="connect-btn">Подключить</button></div>
-    <small>Открой <a href="#" target="_blank" rel="noopener noreferrer">панель ESP32</a> → Настройки → ключи для Android/Windows. Используй сохранённый ключ или свободный слот: перевыпуск ключа отключит старый клиент этого слота. Ключ хранится только в памяти локального сервера. Соединение PC → ESP32 использует обычный HTTP внутри домашней сети.</small>    <div class="connection-result" id="connection-result" role="status" aria-live="polite">Ключ пока не установлен. Интерфейс работает в деморежиме.</div>
-  </form>
-  <div class="connection-actions"><button id="disconnect-btn" type="button">Отключить источник</button><button id="refresh-btn" type="button">Обновить показания</button></div>
-</section>
-
-        <div class="settings-list"><div class="settings-row"><div><strong>Тёмная тема</strong><small>Переключение цветовой схемы</small></div><button class="switch" id="theme-switch" role="switch" aria-checked="true" aria-label="Тёмная тема"><span></span></button></div><div class="settings-row"><div><strong>Источник данных</strong><small>Встроенная модель — без сетевых запросов</small></div><span class="info-chip">DEMO</span></div><div class="settings-row"><div><strong>Связь с ESP32</strong><small>Интеграция в прошивку не выполнена</small></div><span class="device-status unknown">Выключена</span></div><div class="settings-row"><div><strong>Обычный UI</strong><small>Вернуться к существующему локальному макету</small></div><a href="../" class="plain-link">Открыть <svg><use href="#i-chevron"/></svg></a></div></div>
-        <div class="pwa-info"><strong>Добавить на экран iPhone</strong><p>В Safari открой HTTPS-версию → Поделиться → На экран «Домой». После загрузки интерфейс DEMO доступен офлайн. Реальные показания BMS в публичной PWA отключены.</p></div><p class="disclaimer">Оригинальная независимая реализация для исследования UI/UX FusionSolar. Не использует его графические ресурсы, исходный код, торговые знаки или облачные сервисы.</p>
-      </section>
     </main>
-  </div>
-</div>
-<nav class="mobile-tabs" aria-label="Нижняя навигация"><button data-target="home" class="active"><svg><use href="#i-home"/></svg><span>Главная</span></button><button data-target="analytics"><svg><use href="#i-chart"/></svg><span>Аналитика</span></button><button data-target="devices"><svg><use href="#i-devices"/></svg><span>Устройства</span></button><button data-target="settings"><svg><use href="#i-settings"/></svg><span>Настройки</span></button></nav>
-<script src="./icon-inline.js"></script><script src="./bms-client.js"></script><script src="./logic.js"></script><script src="./app.js"></script>
-<script src="./pwa.js"></script></body></html>
+
+    <!-- Scenarios Controls -->
+    <div class="fixed bottom-0 left-0 right-0 p-4 sm:p-6 bg-black/80 backdrop-blur-md border-t border-gray-800 z-30">
+        <div class="max-w-[800px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
+            <button id="btn-sc-1" onclick="setScenario(1)" class="scenario-btn p-2 sm:p-3 text-xs sm:text-sm font-medium bg-gray-900 rounded-lg border border-gray-700 hover:bg-gray-800 text-gray-300">
+                1. Сеть &rarr; Квартира
+            </button>
+            <button id="btn-sc-2" onclick="setScenario(2)" class="scenario-btn p-2 sm:p-3 text-xs sm:text-sm font-medium bg-gray-900 rounded-lg border border-gray-700 hover:bg-gray-800 text-gray-300">
+                2. Сеть &rarr; Квартира + АКБ
+            </button>
+            <button id="btn-sc-3" onclick="setScenario(3)" class="scenario-btn p-2 sm:p-3 text-xs sm:text-sm font-medium bg-gray-900 rounded-lg border border-gray-700 hover:bg-gray-800 text-gray-300">
+                3. АКБ &rarr; Квартира
+            </button>
+            <button id="btn-sc-4" onclick="setScenario(4)" class="scenario-btn p-2 sm:p-3 text-xs sm:text-sm font-medium bg-gray-900 rounded-lg border border-gray-700 hover:bg-gray-800 text-gray-300">
+                4. Выключено
+            </button>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        lucide.createIcons();
+
+        // Colors for active states
+        const COLORS = {
+            grid: '#FF9800',
+            bat: '#00E676',
+            apt: '#00B0FF',
+            inv: '#E040FB',
+            inactive: '#333333'
+        };
+
+        // Definition of states for each scenario
+        const scenarios = {
+            1: { // Grid -> Apartment
+                grid: { val: "2.8 кВт", active: true },
+                bat:  { val: "0.0 кВт", active: false },
+                apt:  { val: "2.8 кВт", active: true },
+                inv:  { val: "0.0 кВт", active: false },
+                lines: {
+                    'path-grid-inv': { active: false },
+                    'path-inv-apt':  { active: false },
+                    'path-inv-bat':  { active: false },
+                    'path-bat-inv':  { active: false },
+                    'path-grid-apt': { color: COLORS.grid, active: true },
+                },
+                anim: ['anim-grid-apt']
+            },
+            2: { // Grid -> Apartment & Grid -> Battery
+                grid: { val: "5.2 кВт", active: true },
+                bat:  { val: "2.4 кВт", active: true },
+                apt:  { val: "2.8 кВт", active: true },
+                inv:  { val: "2.4 кВт", active: true },
+                lines: {
+                    'path-grid-inv': { color: COLORS.grid, active: true },
+                    'path-inv-apt':  { active: false },
+                    'path-inv-bat':  { color: COLORS.grid, active: true }, // Orange because it's grid charging battery
+                    'path-bat-inv':  { active: false },
+                    'path-grid-apt': { color: COLORS.grid, active: true },
+                },
+                anim: ['anim-grid-apt', 'anim-grid-inv', 'anim-inv-bat']
+            },
+            3: { // Battery -> Apartment
+                grid: { val: "0.0 кВт", active: false },
+                bat:  { val: "2.8 кВт", active: true },
+                apt:  { val: "2.8 кВт", active: true },
+                inv:  { val: "2.8 кВт", active: true },
+                lines: {
+                    'path-grid-inv': { active: false },
+                    'path-inv-apt':  { color: COLORS.bat, active: true },
+                    'path-inv-bat':  { active: false },
+                    'path-bat-inv':  { color: COLORS.bat, active: true },
+                    'path-grid-apt': { active: false },
+                },
+                anim: ['anim-bat-inv', 'anim-inv-apt']
+            },
+            4: { // All off
+                grid: { val: "0.0 кВт", active: false },
+                bat:  { val: "0.0 кВт", active: false },
+                apt:  { val: "0.0 кВт", active: false },
+                inv:  { val: "0.0 кВт", active: false },
+                lines: {
+                    'path-grid-inv': { active: false },
+                    'path-inv-apt':  { active: false },
+                    'path-inv-bat':  { active: false },
+                    'path-bat-inv':  { active: false },
+                    'path-grid-apt': { active: false },
+                },
+                anim: []
+            }
+        };
+
+        function updateNodeUI(id, data, activeColor) {
+            const node = document.getElementById('node-' + id);
+            const icon = document.getElementById('icon-' + id);
+            const text = document.getElementById('val-' + id);
+
+            text.textContent = data.val;
+
+            if (data.active) {
+                node.style.borderColor = activeColor;
+                node.style.boxShadow = '0 0 15px ' + activeColor + '33, inset 0 0 10px ' + activeColor + '1A';
+                icon.style.color = activeColor;
+                text.style.color = activeColor;
+            } else {
+                node.style.borderColor = COLORS.inactive;
+                node.style.boxShadow = 'none';
+                icon.style.color = '#555555';
+                text.style.color = '#555555';
+            }
+        }
+
+        function setScenario(sc) {
+            // Update button styles to highlight active
+            [1, 2, 3, 4].forEach(idx => {
+                const btn = document.getElementById('btn-sc-' + idx);
+                if (idx === sc) {
+                    btn.classList.add('border-purple-500', 'text-purple-400', 'bg-purple-900/20');
+                    btn.classList.remove('border-gray-700', 'text-gray-300', 'bg-gray-900');
+                } else {
+                    btn.classList.remove('border-purple-500', 'text-purple-400', 'bg-purple-900/20');
+                    btn.classList.add('border-gray-700', 'text-gray-300', 'bg-gray-900');
+                }
+            });
+
+            const s = scenarios[sc];
+
+            // 1. Update Nodes (Borders, Text, Icons)
+            updateNodeUI('grid', s.grid, COLORS.grid);
+            updateNodeUI('bat', s.bat, COLORS.bat);
+            updateNodeUI('apt', s.apt, COLORS.apt);
+            updateNodeUI('inv', s.inv, COLORS.inv);
+
+            // 2. Update Lines (Color, Opacity)
+            ['path-grid-inv', 'path-inv-apt', 'path-bat-inv', 'path-inv-bat', 'path-grid-apt'].forEach(lineId => {
+                const line = document.getElementById(lineId);
+                const lineData = s.lines[lineId];
+                
+                if (lineData && lineData.active) {
+                    line.setAttribute('stroke', lineData.color);
+                    line.setAttribute('opacity', '0.8');
+                } else {
+                    line.setAttribute('stroke', COLORS.inactive);
+                    line.setAttribute('opacity', '0.5');
+                }
+            });
+
+            // 3. Update Animating Flows (Show/Hide, Color)
+            ['anim-grid-inv', 'anim-inv-apt', 'anim-bat-inv', 'anim-inv-bat', 'anim-grid-apt'].forEach(animId => {
+                const flow = document.getElementById(animId);
+                if (s.anim.includes(animId)) {
+                    flow.style.opacity = '1';
+                    // Match the color with the corresponding path
+                    const pathId = animId.replace('anim-', 'path-');
+                    flow.setAttribute('stroke', s.lines[pathId].color);
+                } else {
+                    flow.style.opacity = '0';
+                }
+            });
+        }
+
+        // Initialize with scenario 1
+        window.addEventListener('DOMContentLoaded', () => {
+            setScenario(1);
+        });
+
+    </script>
+</body>
+</html>

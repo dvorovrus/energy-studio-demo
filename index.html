@@ -1,1 +1,318 @@
-<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0A59F7"><meta http-equiv="refresh" content="0;url=fusionsolar/"><title>Energy Studio — PWA DEMO</title><a href="fusionsolar/">Открыть Energy Studio</a></html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поток энергии</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Include Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: white;
+            margin: 0;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        /* Shared node styling */
+        .power-node {
+            background-color: rgba(0, 0, 0, 0.8);
+            border-width: 2px;
+            border-style: solid;
+            backdrop-filter: blur(4px);
+            transition: all 0.4s ease;
+            border-color: #333333; /* Default inactive */
+        }
+
+        .icon-transition {
+            transition: color 0.4s ease;
+            color: #555555; /* Default inactive */
+        }
+        
+        .val-transition {
+            transition: color 0.4s ease;
+            color: #555555; /* Default inactive */
+        }
+
+        .scenario-btn {
+            transition: all 0.2s ease;
+        }
+
+        /* Animated Flow Lines (Dots) */
+        .anim-flow {
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-dasharray: 0.1 3.9;
+            animation: flow-anim 0.6s linear infinite;
+            opacity: 0;
+            transition: opacity 0.4s ease, stroke 0.4s ease;
+        }
+
+        @keyframes flow-anim {
+            from { stroke-dashoffset: 4; }
+            to { stroke-dashoffset: 0; }
+        }
+        
+        svg path.static-line {
+            transition: stroke 0.4s ease, opacity 0.4s ease;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen w-full select-none">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between p-4 sm:p-6 pb-2 z-20 relative">
+        <button class="p-2 -ml-2 text-white hover:text-gray-300 transition-colors cursor-pointer" aria-label="Назад">
+            <i data-lucide="chevron-left" class="w-6 h-6 sm:w-8 sm:h-8"></i>
+        </button>
+        <h1 class="text-base sm:text-lg tracking-[0.2em] font-medium uppercase absolute left-1/2 transform -translate-x-1/2">
+            ПОТОК ЭНЕРГИИ
+        </h1>
+        <div class="w-8"></div> <!-- Spacer for centering -->
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 relative w-full max-w-[600px] mx-auto flex items-center justify-center overflow-hidden mb-20 sm:mb-0">
+        
+        <!-- Container for responsive aspect ratio -->
+        <div class="relative w-full aspect-square max-h-full">
+            
+            <!-- SVG Layer for Lines and Animations -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <filter id="glow" filterUnits="userSpaceOnUse" x="-20" y="-20" width="140" height="140">
+                        <feGaussianBlur stdDeviation="0.8" result="blur" />
+                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                </defs>
+
+                <!-- Static Connecting Lines -->
+                <path id="path-grid-inv" class="static-line" d="M 27 50 L 38 50" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <path id="path-inv-apt" class="static-line" d="M 62 50 L 73 50" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <path id="path-inv-bat" class="static-line" d="M 50 62 L 50 73" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <path id="path-bat-inv" class="static-line" d="M 50 73 L 50 62" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <!-- New Bypass Line (Grid direct to Apartment) -->
+                <path id="path-grid-apt" class="static-line" d="M 23 41 Q 50 15 77 41" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+
+                <!-- Animating Energy Flow (Dashed lines acting as moving dots) -->
+                <path id="anim-grid-inv" class="anim-flow" d="M 27 50 L 38 50" filter="url(#glow)" />
+                <path id="anim-inv-bat" class="anim-flow" d="M 50 62 L 50 73" filter="url(#glow)" />
+                <path id="anim-bat-inv" class="anim-flow" d="M 50 73 L 50 62" filter="url(#glow)" />
+                <path id="anim-inv-apt" class="anim-flow" d="M 62 50 L 73 50" filter="url(#glow)" />
+                <path id="anim-grid-apt" class="anim-flow" d="M 23 41 Q 50 15 77 41" filter="url(#glow)" />
+            </svg>
+
+            <!-- HTML Nodes Overlay -->
+            
+            <!-- LEFT: Городская сеть (Grid) -->
+            <div class="absolute top-[50%] left-[15%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+                <div id="node-grid" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
+                    <i data-lucide="utility-pole" id="icon-grid" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
+                    <span id="val-grid" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
+                </div>
+                <span class="absolute top-full mt-2 text-[10px] sm:text-xs text-gray-300 font-medium tracking-wide whitespace-nowrap">Городская сеть</span>
+            </div>
+            
+            <!-- CENTER: Инвертор (Inverter) -->
+            <div class="absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+                <span class="absolute bottom-full mb-2 text-[10px] sm:text-xs text-gray-300 font-medium tracking-wide whitespace-nowrap">Инвертор</span>
+                <div id="node-inv" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
+                    <i data-lucide="cpu" id="icon-inv" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
+                    <span id="val-inv" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
+                </div>
+            </div>
+
+            <!-- RIGHT: Квартира (Apartment) -->
+            <div class="absolute top-[50%] left-[85%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+                <div id="node-apt" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
+                    <i data-lucide="building-2" id="icon-apt" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
+                    <span id="val-apt" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
+                </div>
+                <span class="absolute top-full mt-2 text-[10px] sm:text-xs text-gray-300 font-medium tracking-wide whitespace-nowrap">Квартира</span>
+            </div>
+
+            <!-- BOTTOM: Аккумулятор (Battery) -->
+            <div class="absolute top-[85%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+                <div id="node-bat" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
+                    <i data-lucide="battery-medium" id="icon-bat" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
+                    <span id="val-bat" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
+                </div>
+                <span class="absolute top-full mt-2 text-[10px] sm:text-xs text-gray-300 font-medium tracking-wide whitespace-nowrap">Аккумулятор</span>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Scenarios Controls -->
+    <div class="fixed bottom-0 left-0 right-0 p-4 sm:p-6 bg-black/80 backdrop-blur-md border-t border-gray-800 z-30">
+        <div class="max-w-[800px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
+            <button id="btn-sc-1" onclick="setScenario(1)" class="scenario-btn p-2 sm:p-3 text-xs sm:text-sm font-medium bg-gray-900 rounded-lg border border-gray-700 hover:bg-gray-800 text-gray-300">
+                1. Сеть &rarr; Квартира
+            </button>
+            <button id="btn-sc-2" onclick="setScenario(2)" class="scenario-btn p-2 sm:p-3 text-xs sm:text-sm font-medium bg-gray-900 rounded-lg border border-gray-700 hover:bg-gray-800 text-gray-300">
+                2. Сеть &rarr; Квартира + АКБ
+            </button>
+            <button id="btn-sc-3" onclick="setScenario(3)" class="scenario-btn p-2 sm:p-3 text-xs sm:text-sm font-medium bg-gray-900 rounded-lg border border-gray-700 hover:bg-gray-800 text-gray-300">
+                3. АКБ &rarr; Квартира
+            </button>
+            <button id="btn-sc-4" onclick="setScenario(4)" class="scenario-btn p-2 sm:p-3 text-xs sm:text-sm font-medium bg-gray-900 rounded-lg border border-gray-700 hover:bg-gray-800 text-gray-300">
+                4. Выключено
+            </button>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        lucide.createIcons();
+
+        // Colors for active states
+        const COLORS = {
+            grid: '#FF9800',
+            bat: '#00E676',
+            apt: '#00B0FF',
+            inv: '#E040FB',
+            inactive: '#333333'
+        };
+
+        // Definition of states for each scenario
+        const scenarios = {
+            1: { // Grid -> Apartment
+                grid: { val: "2.8 кВт", active: true },
+                bat:  { val: "0.0 кВт", active: false },
+                apt:  { val: "2.8 кВт", active: true },
+                inv:  { val: "0.0 кВт", active: false },
+                lines: {
+                    'path-grid-inv': { active: false },
+                    'path-inv-apt':  { active: false },
+                    'path-inv-bat':  { active: false },
+                    'path-bat-inv':  { active: false },
+                    'path-grid-apt': { color: COLORS.grid, active: true },
+                },
+                anim: ['anim-grid-apt']
+            },
+            2: { // Grid -> Apartment & Grid -> Battery
+                grid: { val: "5.2 кВт", active: true },
+                bat:  { val: "2.4 кВт", active: true },
+                apt:  { val: "2.8 кВт", active: true },
+                inv:  { val: "2.4 кВт", active: true },
+                lines: {
+                    'path-grid-inv': { color: COLORS.grid, active: true },
+                    'path-inv-apt':  { active: false },
+                    'path-inv-bat':  { color: COLORS.grid, active: true }, // Orange because it's grid charging battery
+                    'path-bat-inv':  { active: false },
+                    'path-grid-apt': { color: COLORS.grid, active: true },
+                },
+                anim: ['anim-grid-apt', 'anim-grid-inv', 'anim-inv-bat']
+            },
+            3: { // Battery -> Apartment
+                grid: { val: "0.0 кВт", active: false },
+                bat:  { val: "2.8 кВт", active: true },
+                apt:  { val: "2.8 кВт", active: true },
+                inv:  { val: "2.8 кВт", active: true },
+                lines: {
+                    'path-grid-inv': { active: false },
+                    'path-inv-apt':  { color: COLORS.bat, active: true },
+                    'path-inv-bat':  { active: false },
+                    'path-bat-inv':  { color: COLORS.bat, active: true },
+                    'path-grid-apt': { active: false },
+                },
+                anim: ['anim-bat-inv', 'anim-inv-apt']
+            },
+            4: { // All off
+                grid: { val: "0.0 кВт", active: false },
+                bat:  { val: "0.0 кВт", active: false },
+                apt:  { val: "0.0 кВт", active: false },
+                inv:  { val: "0.0 кВт", active: false },
+                lines: {
+                    'path-grid-inv': { active: false },
+                    'path-inv-apt':  { active: false },
+                    'path-inv-bat':  { active: false },
+                    'path-bat-inv':  { active: false },
+                    'path-grid-apt': { active: false },
+                },
+                anim: []
+            }
+        };
+
+        function updateNodeUI(id, data, activeColor) {
+            const node = document.getElementById('node-' + id);
+            const icon = document.getElementById('icon-' + id);
+            const text = document.getElementById('val-' + id);
+
+            text.textContent = data.val;
+
+            if (data.active) {
+                node.style.borderColor = activeColor;
+                node.style.boxShadow = '0 0 15px ' + activeColor + '33, inset 0 0 10px ' + activeColor + '1A';
+                icon.style.color = activeColor;
+                text.style.color = activeColor;
+            } else {
+                node.style.borderColor = COLORS.inactive;
+                node.style.boxShadow = 'none';
+                icon.style.color = '#555555';
+                text.style.color = '#555555';
+            }
+        }
+
+        function setScenario(sc) {
+            // Update button styles to highlight active
+            [1, 2, 3, 4].forEach(idx => {
+                const btn = document.getElementById('btn-sc-' + idx);
+                if (idx === sc) {
+                    btn.classList.add('border-purple-500', 'text-purple-400', 'bg-purple-900/20');
+                    btn.classList.remove('border-gray-700', 'text-gray-300', 'bg-gray-900');
+                } else {
+                    btn.classList.remove('border-purple-500', 'text-purple-400', 'bg-purple-900/20');
+                    btn.classList.add('border-gray-700', 'text-gray-300', 'bg-gray-900');
+                }
+            });
+
+            const s = scenarios[sc];
+
+            // 1. Update Nodes (Borders, Text, Icons)
+            updateNodeUI('grid', s.grid, COLORS.grid);
+            updateNodeUI('bat', s.bat, COLORS.bat);
+            updateNodeUI('apt', s.apt, COLORS.apt);
+            updateNodeUI('inv', s.inv, COLORS.inv);
+
+            // 2. Update Lines (Color, Opacity)
+            ['path-grid-inv', 'path-inv-apt', 'path-bat-inv', 'path-inv-bat', 'path-grid-apt'].forEach(lineId => {
+                const line = document.getElementById(lineId);
+                const lineData = s.lines[lineId];
+                
+                if (lineData && lineData.active) {
+                    line.setAttribute('stroke', lineData.color);
+                    line.setAttribute('opacity', '0.8');
+                } else {
+                    line.setAttribute('stroke', COLORS.inactive);
+                    line.setAttribute('opacity', '0.5');
+                }
+            });
+
+            // 3. Update Animating Flows (Show/Hide, Color)
+            ['anim-grid-inv', 'anim-inv-apt', 'anim-bat-inv', 'anim-inv-bat', 'anim-grid-apt'].forEach(animId => {
+                const flow = document.getElementById(animId);
+                if (s.anim.includes(animId)) {
+                    flow.style.opacity = '1';
+                    // Match the color with the corresponding path
+                    const pathId = animId.replace('anim-', 'path-');
+                    flow.setAttribute('stroke', s.lines[pathId].color);
+                } else {
+                    flow.style.opacity = '0';
+                }
+            });
+        }
+
+        // Initialize with scenario 1
+        window.addEventListener('DOMContentLoaded', () => {
+            setScenario(1);
+        });
+
+    </script>
+</body>
+</html>
