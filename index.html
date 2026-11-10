@@ -79,6 +79,23 @@
             max-height: calc(100dvh - 200px);
             flex: 0 0 auto;
         }
+
+        /* Explicit coordinates also work if Tailwind's dynamic utility generation
+           is delayed on a mobile browser. */
+        .flow-stage .flow-spot {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 20%;
+            z-index: 10;
+            transform: translate(-50%, -50%);
+        }
+        .flow-stage .flow-grid { top: 14%; left: 20%; }
+        .flow-stage .flow-inverter { top: 48%; left: 50%; }
+        .flow-stage .flow-battery { top: 83%; left: 24%; }
+        .flow-stage .flow-apartment { top: 83%; left: 78%; }
+        .flow-stage .power-node { border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .flow-stage .power-node {
             width: clamp(48px, 20vw, 82px);
             height: clamp(48px, 20vw, 82px);
@@ -146,7 +163,7 @@
             <!-- HTML Nodes Overlay -->
             
             <!-- LEFT: Городская сеть (Grid) -->
-            <div class="absolute top-[14%] left-[20%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+            <div class="flow-spot flow-grid absolute top-[14%] left-[20%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
                 <div id="node-grid" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
                     <i data-lucide="utility-pole" id="icon-grid" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
                     <span id="val-grid" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
@@ -155,7 +172,7 @@
             </div>
             
             <!-- CENTER: Инвертор (Inverter) -->
-            <div class="absolute top-[48%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+            <div class="flow-spot flow-inverter absolute top-[48%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
                 <span class="absolute bottom-full mb-2 text-[10px] sm:text-xs text-gray-300 font-medium tracking-wide whitespace-nowrap">Инвертор</span>
                 <div id="node-inv" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
                     <i data-lucide="cpu" id="icon-inv" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
@@ -164,7 +181,7 @@
             </div>
 
             <!-- RIGHT: Квартира (Apartment) -->
-            <div class="absolute top-[83%] left-[78%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+            <div class="flow-spot flow-apartment absolute top-[83%] left-[78%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
                 <div id="node-apt" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
                     <i data-lucide="building-2" id="icon-apt" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
                     <span id="val-apt" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
@@ -173,7 +190,7 @@
             </div>
 
             <!-- BOTTOM: Аккумулятор (Battery) -->
-            <div class="absolute top-[83%] left-[24%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+            <div class="flow-spot flow-battery absolute top-[83%] left-[24%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
                 <div id="node-bat" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
                     <i data-lucide="battery-medium" id="icon-bat" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
                     <span id="val-bat" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
