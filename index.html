@@ -61,6 +61,42 @@
         svg path.static-line {
             transition: stroke 0.4s ease, opacity 0.4s ease;
         }
+
+        /* Portrait topology: grid top-left, inverter center, battery bottom-left,
+           apartment bottom-right. Lines and nodes share the same SVG coordinates. */
+        body { height: 100dvh; min-height: 0; }
+        .flow-layout {
+            box-sizing: border-box;
+            min-height: 0;
+            max-width: none;
+            margin: 0 auto !important;
+            padding: 0 12px calc(112px + env(safe-area-inset-bottom));
+        }
+        .flow-stage {
+            position: relative;
+            aspect-ratio: 100 / 160;
+            width: min(100%, 420px, calc((100dvh - 200px) * .625));
+            max-height: calc(100dvh - 200px);
+            flex: 0 0 auto;
+        }
+        .flow-stage .power-node {
+            width: clamp(48px, 20vw, 82px);
+            height: clamp(48px, 20vw, 82px);
+            flex-shrink: 0;
+        }
+        .flow-stage .power-node .lucide {
+            width: clamp(17px, 5.4vw, 27px);
+            height: clamp(17px, 5.4vw, 27px);
+        }
+        .flow-stage .power-node .val-transition { font-size: clamp(9px, 2.65vw, 12px); }
+        .flow-stage .power-node + span { font-size: clamp(9px, 2.6vw, 12px); }
+        @media (max-height: 640px) {
+            .flow-layout { padding-bottom: calc(105px + env(safe-area-inset-bottom)); }
+            .flow-stage {
+                width: min(100%, 420px, calc((100dvh - 180px) * .625));
+                max-height: calc(100dvh - 180px);
+            }
+        }
     </style>
 </head>
 <body class="flex flex-col h-screen w-full select-none">
@@ -77,13 +113,13 @@
     </header>
 
     <!-- Main Content Area -->
-    <main class="flex-1 relative w-full max-w-[600px] mx-auto flex items-center justify-center overflow-hidden mb-20 sm:mb-0">
+    <main class="flex-1 relative w-full mx-auto flex items-center justify-center overflow-hidden flow-layout">
         
         <!-- Container for responsive aspect ratio -->
-        <div class="relative w-full aspect-square max-h-full">
+        <div class="relative w-full flow-stage">
             
             <!-- SVG Layer for Lines and Animations -->
-            <svg class="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <svg class="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 100 160" preserveAspectRatio="xMidYMid meet">
                 <defs>
                     <filter id="glow" filterUnits="userSpaceOnUse" x="-20" y="-20" width="140" height="140">
                         <feGaussianBlur stdDeviation="0.8" result="blur" />
@@ -92,25 +128,25 @@
                 </defs>
 
                 <!-- Static Connecting Lines -->
-                <path id="path-grid-inv" class="static-line" d="M 27 50 L 38 50" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
-                <path id="path-inv-apt" class="static-line" d="M 62 50 L 73 50" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
-                <path id="path-inv-bat" class="static-line" d="M 50 62 L 50 73" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
-                <path id="path-bat-inv" class="static-line" d="M 50 73 L 50 62" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <path id="path-grid-inv" class="static-line" d="M 20 29 C 20 45 18 62 40 74" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <path id="path-inv-apt" class="static-line" d="M 59 81 C 76 86 78 104 78 122" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <path id="path-inv-bat" class="static-line" d="M 41 81 C 26 88 24 105 24 122" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <path id="path-bat-inv" class="static-line" d="M 24 122 C 24 105 26 88 41 81" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
                 <!-- New Bypass Line (Grid direct to Apartment) -->
-                <path id="path-grid-apt" class="static-line" d="M 23 41 Q 50 15 77 41" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
+                <path id="path-grid-apt" class="static-line" d="M 28 17 C 70 -4 95 22 95 75 C 95 99 91 116 86 126" fill="none" stroke="#333333" stroke-width="0.3" opacity="0.5" stroke-linecap="round" />
 
                 <!-- Animating Energy Flow (Dashed lines acting as moving dots) -->
-                <path id="anim-grid-inv" class="anim-flow" d="M 27 50 L 38 50" filter="url(#glow)" />
-                <path id="anim-inv-bat" class="anim-flow" d="M 50 62 L 50 73" filter="url(#glow)" />
-                <path id="anim-bat-inv" class="anim-flow" d="M 50 73 L 50 62" filter="url(#glow)" />
-                <path id="anim-inv-apt" class="anim-flow" d="M 62 50 L 73 50" filter="url(#glow)" />
-                <path id="anim-grid-apt" class="anim-flow" d="M 23 41 Q 50 15 77 41" filter="url(#glow)" />
+                <path id="anim-grid-inv" class="anim-flow" d="M 20 29 C 20 45 18 62 40 74" filter="url(#glow)" />
+                <path id="anim-inv-bat" class="anim-flow" d="M 41 81 C 26 88 24 105 24 122" filter="url(#glow)" />
+                <path id="anim-bat-inv" class="anim-flow" d="M 24 122 C 24 105 26 88 41 81" filter="url(#glow)" />
+                <path id="anim-inv-apt" class="anim-flow" d="M 59 81 C 76 86 78 104 78 122" filter="url(#glow)" />
+                <path id="anim-grid-apt" class="anim-flow" d="M 28 17 C 70 -4 95 22 95 75 C 95 99 91 116 86 126" filter="url(#glow)" />
             </svg>
 
             <!-- HTML Nodes Overlay -->
             
             <!-- LEFT: Городская сеть (Grid) -->
-            <div class="absolute top-[50%] left-[15%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+            <div class="absolute top-[14%] left-[20%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
                 <div id="node-grid" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
                     <i data-lucide="utility-pole" id="icon-grid" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
                     <span id="val-grid" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
@@ -119,7 +155,7 @@
             </div>
             
             <!-- CENTER: Инвертор (Inverter) -->
-            <div class="absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+            <div class="absolute top-[48%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
                 <span class="absolute bottom-full mb-2 text-[10px] sm:text-xs text-gray-300 font-medium tracking-wide whitespace-nowrap">Инвертор</span>
                 <div id="node-inv" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
                     <i data-lucide="cpu" id="icon-inv" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
@@ -128,7 +164,7 @@
             </div>
 
             <!-- RIGHT: Квартира (Apartment) -->
-            <div class="absolute top-[50%] left-[85%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+            <div class="absolute top-[83%] left-[78%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
                 <div id="node-apt" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
                     <i data-lucide="building-2" id="icon-apt" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
                     <span id="val-apt" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
@@ -137,7 +173,7 @@
             </div>
 
             <!-- BOTTOM: Аккумулятор (Battery) -->
-            <div class="absolute top-[85%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
+            <div class="absolute top-[83%] left-[24%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10 w-[20%]">
                 <div id="node-bat" class="power-node w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center">
                     <i data-lucide="battery-medium" id="icon-bat" class="icon-transition w-6 h-6 sm:w-8 sm:h-8 mb-1"></i>
                     <span id="val-bat" class="val-transition text-xs sm:text-sm font-medium">0.0 кВт</span>
@@ -169,6 +205,21 @@
     <!-- Application Logic -->
     <script>
         lucide.createIcons();
+
+        // Retire the old Energy Studio offline worker so it cannot keep showing
+        // a cached copy of the previous PWA at /fusionsolar/.
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(registrations =>
+                registrations.filter(reg => new URL(reg.scope).pathname.includes('/energy-studio-demo/fusionsolar/'))
+                    .forEach(reg => reg.unregister())
+            ).catch(() => {});
+        }
+        if ('caches' in window) {
+            caches.keys().then(keys =>
+                keys.filter(key => key.startsWith('energy-studio-')).forEach(key => caches.delete(key))
+            ).catch(() => {});
+        }
+
 
         // Colors for active states
         const COLORS = {
