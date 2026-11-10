@@ -331,6 +331,7 @@
     if(state.session.length>480)state.session.shift();
   }
   function setMode(mode){
+    if(mode==='live')stopAutoDemo();
     state.mode=mode;
     if(wifiDemoOnly&&mode==='live'){state.mode='demo';return;}
     if(mode==='demo'){
@@ -433,11 +434,35 @@
   $('refresh-btn').addEventListener('click',()=>{if(!state.tokenConfigured){connectionMessage('Сначала настрой ключ просмотра.','warning');return;}if(state.mode!=='live')setMode('live');else poll();});
   $('use-demo').addEventListener('click',()=>setMode('demo'));
   $('use-live').addEventListener('click',()=>setMode('live'));
+  let autoDemoTimer=null;
+  let autoDemoIndex=0;
+  const demoSequence=['battery','grid','sun','idle'];
+  function stopAutoDemo() {
+    if(autoDemoTimer!==null){clearInterval(autoDemoTimer);autoDemoTimer=null;}
+    const button=$('auto-demo');
+    if(button){button.textContent='▶ Автодемо';button.setAttribute('aria-pressed','false');}
+  }
+  function cycleDemo() {
+    if(state.mode!=='demo'||document.hidden)return;
+    const preset=demoSequence[autoDemoIndex++%demoSequence.length];
+    Object.assign(state.demo,presets[preset]);
+    render();
+    statusMessage('DEMO · сценарий '+({'battery':'От АКБ','grid':'От сети','sun':'PV + заряд','idle':'Покой'}[preset]));
+  }
+  $('auto-demo').addEventListener('click',()=>{
+    if(autoDemoTimer!==null){stopAutoDemo();statusMessage('DEMO · управление вручную');return;}
+    if(state.mode!=='demo')setMode('demo');
+    cycleDemo();
+    autoDemoTimer=setInterval(cycleDemo,6500);
+    $('auto-demo').textContent='Ⅱ Остановить';
+    $('auto-demo').setAttribute('aria-pressed','true');
+  });
   for(const [id,key] of Object.entries({soc:'soc',current:'current',solar:'solarW',load:'homeW'})){
-    $(id).addEventListener('input',event=>{state.demo[key]=Number(event.target.value);if(state.mode==='demo')render();});
+    $(id).addEventListener('input',event=>{stopAutoDemo();state.demo[key]=Number(event.target.value);if(state.mode==='demo')render();});
   }
   document.querySelectorAll('[data-preset]').forEach(btn=>{
     btn.addEventListener('click',()=>{
+      stopAutoDemo();
       Object.assign(state.demo,presets[btn.dataset.preset]);
       if(state.mode==='demo')render();
     });
