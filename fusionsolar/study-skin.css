@@ -1,0 +1,258 @@
+/* Energy Studio Research Skin V3 (2026-11-10)
+   Original independently authored UI. Inspired by verified *declarations* in
+   Huawei Android APK 26.2.6.001 and public app visual hierarchy.
+   Resource declarations are not a pixel-perfect screen specification.
+*/
+:root {
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI Variable","Segoe UI","Noto Sans",system-ui,sans-serif;
+  font-synthesis:none;
+}
+body[data-theme="light"] {
+  --bg:#F1F3F5;
+  --sidebar:#FFFFFF;
+  --card:#FFFFFF;
+  --card2:#F5F7F9;
+  --stroke:#E6EBF0;
+  --text:#191919;
+  --muted:#666666;
+  --soft:#8B96A2;
+  --accent:#0A59F7;
+  --accent-dark:#ECF2FF;
+  --shadow:0 6px 22px #172D4710;
+  --hero-sky:#DCEBFA;
+  --hero-cloud:#F0F6FB;
+  --hero-line:#C8DCEC;
+  --hero-glass:#F6FAFF;
+  --nav-blur:#FFFFFFEE;
+}
+body[data-theme="dark"] {
+  --bg:#111B28;
+  --sidebar:#182534;
+  --card:#202F3F;
+  --card2:#293C4B;
+  --stroke:#34475A;
+  --text:#F0F5F9;
+  --muted:#B4C4D1;
+  --soft:#8198A9;
+  --accent:#5F94FF;
+  --accent-dark:#243B5A;
+  --shadow:0 10px 30px #080F1B40;
+  --hero-sky:#273F57;
+  --hero-cloud:#334B5C;
+  --hero-line:#4B667B;
+  --hero-glass:#273C4E;
+  --nav-blur:#192B3AEF;
+}
+body[data-theme="light"] {
+  background:var(--bg);
+}
+body[data-theme="dark"] {
+  background:var(--bg);
+}
+.brand-mark,.source-switcher button.active {
+  background:#0A59F7;
+  color:#FFFFFF;
+  box-shadow:0 4px 13px #0A59F72C;
+}
+.brand small,.topbar-left .eyebrow,.section-heading .eyebrow {
+  color:var(--accent);
+}
+.topbar {
+  border-bottom:1px solid var(--stroke);
+  background:var(--nav-blur);
+}
+.topbar .demo-tag {
+  color:#2D924F;
+  background:#E8F6EC;
+  border:1px solid #B8E3C3;
+}
+body[data-theme="dark"] .topbar .demo-tag {
+  color:#81E3A3;
+  background:#224435;
+  border-color:#335A48;
+}
+.nav-btn.active {
+  color:var(--accent);
+  background:var(--accent-dark);
+  box-shadow:inset 3px 0 0 var(--accent);
+}
+.section-heading h1 {
+  font-weight:750;
+  letter-spacing:-1.25px;
+}
+.online-tag {
+  color:#2F974C;
+  background:#EAF7EF;
+  border-color:#CAEDD5;
+}
+.online-tag[data-state="offline"] {
+  color:#AD6A1D;
+  background:#FFF3E3;
+  border-color:#F7D4A1;
+}
+.system-summary {
+  border:1px solid var(--stroke);
+  background:var(--card);
+  color:var(--text);
+  border-radius:21px;
+  box-shadow:var(--shadow);
+  gap:16px;
+  padding:16px 20px;
+}
+.system-summary:after { display:none; }
+.summary-icon {
+  background:#EAF0FD;
+  border:1px solid #D1DFFF;
+  color:#0A59F7;
+  box-shadow:none;
+}
+body[data-theme="dark"] .summary-icon {background:var(--accent-dark);color:var(--accent);border-color:var(--stroke)}
+.summary-copy small {color:var(--soft);opacity:1;}
+.summary-copy strong {font-size:16px;letter-spacing:-.3px;}
+.summary-copy span {color:var(--muted);opacity:1;}
+.summary-soc small {color:var(--soft);opacity:1;}
+.summary-soc strong {color:#2DA769;font-weight:780;}
+.summary-soc .summary-mode {color:#2DA769;opacity:1;}
+.scene-card {
+  border:1px solid #BED7E9;
+  background:linear-gradient(180deg,#D2E8FA 0%,#E9F3FD 45%,#F9FBFF 92%);
+  border-radius:24px;
+  box-shadow:0 10px 28px #17436B13;
+}
+body[data-theme="dark"] .scene-card {
+  border-color:#436079;
+  background:linear-gradient(180deg,#263C52,#314A5E 46%,#1E3244 96%);
+}
+.scene-card:before {
+  background:radial-gradient(circle at 76% 20%,#FFFFFFBB,transparent 28%);
+}
+.scene-top>span:first-child {
+  border:1px solid #D1E1EF;
+  background:#FFFFFFC2;
+  color:#536A7C;
+  box-shadow:none;
+}
+body[data-theme="dark"] .scene-top>span:first-child {background:#233F55CC;color:#D4E2E9;border-color:#466276;}
+.scene-visual {height:355px;}
+.scene-label {
+  border:0;
+  background:transparent;
+  box-shadow:none;
+  padding:4px 6px;
+  text-shadow:0 1px 8px #F6FBFF;
+}
+body[data-theme="dark"] .scene-label {text-shadow:0 1px 9px #092133;}
+.scene-label span {font-size:10px;color:#62788A;font-weight:600;}
+.scene-label strong {font-size:19px;color:#223849;font-weight:760;}
+body[data-theme="dark"] .scene-label span {color:#BDCFD8;}
+body[data-theme="dark"] .scene-label strong {color:#FFFFFF;}
+.scene-label.battery-label {
+  border:1px solid #B7E9C9;
+  background:#F4FFF8E8;
+  border-radius:13px;
+  box-shadow:0 5px 16px #2DA76913;
+}
+.scene-label.battery-label strong {color:#2DA769;}
+body[data-theme="dark"] .scene-label.battery-label {background:#203D35D9;border-color:#347C56;}
+body[data-theme="dark"] .scene-label.battery-label strong {color:#7DE69A;}
+.scene-bottom {background:var(--card);border-top:1px solid var(--stroke);color:var(--muted);}
+.dashboard-primary {display:flex;flex-direction:column;align-items:stretch;}
+.dashboard-primary>.scene-card {order:0;}
+.dashboard-primary>.two-cards {order:1;}
+.dashboard-primary>.metric-grid {order:2;}
+.dashboard-primary>.cells-card {order:3;}
+.dashboard-primary>.energy-map-card {order:4;}
+.metric-card,.info-card,.energy-map-card,.cells-card,.battery-card,.sim-card,.connection-panel {
+  border-radius:22px;
+  border-color:var(--stroke);
+  box-shadow:var(--shadow);
+}
+.metric-title {color:var(--muted);}
+.metric-number {font-size:30px;font-weight:760;letter-spacing:-1.3px;}
+.metric-icon.green {background:#E5F6EC;color:#2DA769;}
+.metric-icon.blue {background:#EAF1FF;color:#0A59F7;}
+.metric-icon.orange {background:#FFF3E7;color:#ED932B;}
+.progress {background:#E9EEF2;}
+.progress span {
+  background:linear-gradient(90deg,#64BB5C,#2DA769);
+}
+.battery-ring {
+  background:conic-gradient(#64BB5C 0 var(--ring-deg,295deg),var(--card2) var(--ring-deg,295deg) 360deg);
+  box-shadow:0 0 0 7px #64BB5C1C;
+}
+.battery-ring[data-mode="charge"],.battery-ring[data-mode="discharge"] {
+  animation:skin-battery-breathe 3s ease-in-out infinite;
+}
+@keyframes skin-battery-breathe {
+  0%,100% { box-shadow:0 0 0 7px #64BB5C1C, 0 0 0 0 #64BB5C00; }
+  50% { box-shadow:0 0 0 8px #64BB5C29, 0 0 27px 2px #64BB5C32; }
+}
+.ring-inner svg,.ring-icon {color:#2DA769;}
+.ring-inner strong {font-weight:780;}
+.energy-hub {
+  color:#FFFFFF;
+  background:linear-gradient(135deg,#0A59F7,#3080FF);
+  box-shadow:0 0 0 8px #0A59F712,0 0 0 18px #0A59F708,0 10px 30px #0A59F72C;
+}
+.energy-node.node-battery .energy-node-icon {
+  background:#E8F7E9;
+  border-color:#A9DDB2;
+  color:#2DA769;
+}
+body[data-theme="dark"] .energy-node.node-battery .energy-node-icon {
+  background:#1E4336;
+  border-color:#316E4E;
+  color:#64BB5C;
+}
+.energy-map[data-battery="charge"] .node-battery .energy-node-icon,
+.energy-map[data-battery="discharge"] .node-battery .energy-node-icon {
+  animation:skin-cell-glow 2.3s ease-in-out infinite;
+}
+@keyframes skin-cell-glow {
+  50% { box-shadow:0 0 15px 4px #64BB5C35; }
+}
+.trace-battery {stroke:#64BB5C;}
+.trace-home {stroke:#007DFF;}
+.trace-grid {stroke:#5990FD;}
+.trace-solar {stroke:#F7AF4D;}
+.flow-disclaimer {color:var(--accent);}
+.cells-head .eyebrow,.map-head .eyebrow {color:var(--accent);}
+.cell-tower span {background:linear-gradient(180deg,#6FD477,#2DA769);}
+.cell-column.cell-high .cell-tower span {background:linear-gradient(180deg,#FFD38C,#ED9E42);}
+.cell-column.cell-low .cell-tower span {background:linear-gradient(180deg,#A8CEFC,#5990FD);}
+.cell-tower {border-radius:9px 9px 5px 5px;}
+.period-tabs button.active {
+  background:#0A59F7;
+  color:#FFFFFF;
+  box-shadow:none;
+}
+.key-form-line button {background:#0A59F7;color:#FFFFFF;}
+.mobile-tabs button.active {
+  color:#0A59F7;
+  background:#EAF1FF;
+  box-shadow:none;
+}
+body[data-theme="dark"] .mobile-tabs button.active {background:#28436C;color:#8EB5FF;}
+.mobile-tabs {background:var(--nav-blur);}
+.mobile-tabs button.active svg {stroke-width:2.1;}
+@media(max-width:700px) {
+  main {padding:22px 14px calc(128px + env(safe-area-inset-bottom));}
+  .system-summary {padding:12px 15px;border-radius:17px;margin-bottom:13px;}
+  .summary-icon {width:40px;height:40px;border-radius:11px;}
+  .summary-copy strong {font-size:13px;}
+  .summary-soc strong {font-size:28px;}
+  .section-heading h1 {font-size:29px;}
+  .scene-visual {height:auto;aspect-ratio:620/354;}
+  .scene-card {border-radius:20px;}
+  .scene-label span {font-size:9px;}
+  .scene-label strong {font-size:14px;}
+  .scene-label.battery-label {padding:6px 9px;}
+  .metric-card,.info-card,.energy-map-card,.cells-card,.battery-card {border-radius:17px;}
+  .metric-number {font-size:23px;}
+  .battery-ring {width:148px;}
+  .mobile-tabs {border-radius:21px;}
+}
+@media(prefers-reduced-motion:reduce) {
+  .battery-ring,.energy-map[data-battery="charge"] .node-battery .energy-node-icon,
+  .energy-map[data-battery="discharge"] .node-battery .energy-node-icon {animation:none!important;}
+}
